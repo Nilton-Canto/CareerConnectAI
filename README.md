@@ -1,6 +1,7 @@
-# 📚 EstudaAI
+# 📚 Career Connect AI
 
-O **EstudaAI** é uma aplicação web desenvolvida para ajudar estudantes no **planejamento de estudos**, através da **recomendação de trilhas de aprendizagem**. O sistema permite ao aluno escolher entre **trilhas pré-definidas** ou criar **trilhas personalizadas com o apoio de um agente LLM (IA)**.
+O CareerConnectAI é uma aplicação web desenvolvida para auxiliar usuários na definição e planejamento de suas estágio e empregos estudantes e empresas. O sistema permite que o usuário
+escolha entre trilhas de estágio e emprego pré-definidas ou crie um plano de estágio e emprego personalizado com o auxílio de um agente baseado em LLM.
 
 ---
 
