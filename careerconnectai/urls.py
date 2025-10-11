@@ -16,11 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from core import views as core_views
 
 urlpatterns = [
+    # Nova rota para a página inicial
+    path('', core_views.index_view, name='index'),
+    
     path('admin/', admin.site.urls),
+
+    # URLs do app de autenticação
     path('api/users/', include('users.urls')),
 
     # URLs do novo app core
     path('api/', include('core.urls')),
+
+    
 ]
