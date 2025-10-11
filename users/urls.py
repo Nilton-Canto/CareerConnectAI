@@ -7,4 +7,7 @@ urlpatterns = [
 
     # Path para a PÁGINA de login que o usuário vê (GET)  <-- ADICIONE ESTA LINHA
     path('login/', views.login_page_view, name='login_page'),
+
+    # Path para a PÁGINA de dashboard (GET)  <-- ADICIONE ESTA LINHA
+    path('dashboard/', views.dashboard_view, name='dashboard'),
 ]
