@@ -38,3 +38,8 @@ def login_view(request):
 def login_page_view(request):
     # Esta função simplesmente renderiza e retorna o template login.html
     return render(request, 'login.html')
+
+# Nova view para exibir a página de dashboard
+def dashboard_view(request):
+    # Esta função renderiza e retorna o template dashboard.html
+    return render(request, 'dashboard.html')
