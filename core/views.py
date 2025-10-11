@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Area, Trilha, ProgressoUsuario
 from .serializers import AreaSerializer, TrilhaSerializer, ProgressoUsuarioSerializer
@@ -30,3 +31,7 @@ class ProgressoUsuarioViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = ProgressoUsuario.objects.all()
     serializer_class = ProgressoUsuarioSerializer
+
+# Nova view para a página inicial/de acesso
+def index_view(request):
+    return render(request, 'index.html')
