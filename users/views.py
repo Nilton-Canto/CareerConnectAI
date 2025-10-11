@@ -32,3 +32,9 @@ def login_view(request):
 
     # Se a requisição não for POST
     return JsonResponse({'message': 'Método não permitido.'}, status=405)
+
+
+# Nova view para exibir a página de login HTML
+def login_page_view(request):
+    # Esta função simplesmente renderiza e retorna o template login.html
+    return render(request, 'login.html')
