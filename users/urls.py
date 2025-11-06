@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     # Path para a API que recebe os dados do formulário (POST)
-    path('api/login', views.login_view, name='api_login'),
+    path('login/token/', views.login_view, name='api_login'),
     path('api/cadastro', views.cadastro_view, name='api_cadastro'),
 
     # Path para a PÁGINA de login que o usuário vê (GET)

@@ -37,4 +37,4 @@ class AreaSerializer(serializers.ModelSerializer):
 class ProgressoUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProgressoUsuario
-        fields = ['usuario', 'trilha_selecionada', 'etapas_concluidas']
+        fields = ['id', 'usuario', 'trilha_selecionada', 'etapas_concluidas']

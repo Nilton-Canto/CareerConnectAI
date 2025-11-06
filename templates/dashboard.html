@@ -1,65 +1,186 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - CareerConnectAI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CareerConnectAI</title>
+    <style>
+        /* Estilos básicos para organizar a página */
+        .trilha-card {
+            border: 1px solid #ccc;
+            padding: 16px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .trilha-card ul {
+            padding-left: 20px;
+        }
+        .trilha-card li {
+            margin-bottom: 10px;
+        }
+        .complete-btn {
+            background-color: #28a745; /* Verde */
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        .complete-btn:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <h1>Bem-vindo ao seu Dashboard</h1>
-        <nav>
-            <a href="#">Minhas Trilhas</a>
-            <a href="#">Explorar Áreas</a>
-            <a href="#">Sair</a>
-        </nav>
-    </header>
+    <header>
+        <h1>Bem-vindo ao seu Dashboard</h1>
+        <nav>
+            <a href="#">Minhas Trilhas</a>
+            <a href="#">Explorar Áreas</a>
+            <a href="#">Sair</a>
+        </nav>
+    </header>
 
-    <main>
-        <h2>Seu Progresso</h2>
-        <p>Aqui você verá o progresso na sua trilha selecionada.</p>
-    </main>
+    <main>
+        <h2>Seu Progresso</h2>
+        <p>Aqui você verá o progresso na sua trilha selecionada.</p>
+        <h3>Minha Trilha Atual:</h3>
+        <div id="minha-trilha">
+                    </div>
 
-    <script>
-        // Aguarda o DOM estar pronto
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // 1. Pegar o token (vamos assumir que o login salvou no localStorage)
-            const token = localStorage.getItem('authToken'); 
+        <h3>Trilhas Disponíveis:</h3>
+        <div id="trilhas-disponiveis">
+                    </div>
+    </main>
 
-            if (!token) {
-                // Se não tem token, manda o usuário de volta para o login
-                window.location.href = '/api/users/login/';
-                return;
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        
+            // --- 1. CONFIGURAÇÃO INICIAL ---
+            const token = localStorage.getItem('authToken'); 
+            if (!token) {
+                window.location.href = '/api/users/login/';
+                return;
+            }
+
+            const headers = {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json'
+            };
+
+            // --- 2. REFERÊNCIAS DO HTML ---
+            const trilhasContainer = document.getElementById('trilhas-disponiveis');
+            const minhaTrilhaContainer = document.getElementById('minha-trilha');
+
+            // Variável para guardar o ID do progresso do usuário logado
+            let progressoId = null;
+
+            // --- 3. FUNÇÃO PARA BUSCAR E RENDERIZAR TRILHAS ---
+            function fetchTrilhas() {
+                fetch('/api/trilhas/', { method: 'GET' })
+                    .then(response => response.json())
+                    .then(data => {
+                        trilhasContainer.innerHTML = ''; 
+                        data.forEach(trilha => {
+                            const trilhaElement = document.createElement('div');
+                            trilhaElement.className = 'trilha-card';
+                            
+                            let etapasHTML = '<ul>';
+                            trilha.etapas.forEach(etapa => {
+                                // Adiciona o botão de concluir
+                                etapasHTML += `
+                                    <li>
+                                        ${etapa.titulo} (ID: ${etapa.id})
+                                        <button class="complete-btn" data-etapa-id="${etapa.id}">
+                                            Marcar como Concluída
+                                        </button>
+                                    </li>
+                                `;
+                            });
+                            etapasHTML += '</ul>';
+
+                            trilhaElement.innerHTML = `
+                                <h4>${trilha.titulo}</h4>
+                                <p>${trilha.descricao}</p>
+                                <strong>Etapas:</strong>
+                                ${etapasHTML}
+                            `;
+                            trilhasContainer.appendChild(trilhaElement);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao buscar trilhas:', error));
             }
 
-            // 2. Configurar os headers da requisição com o token
-            const headers = {
-                'Authorization': `Token ${token}`,
-                'Content-Type': 'application/json'
-            };
+            // --- 4. FUNÇÃO PARA BUSCAR E RENDERIZAR O PROGRESSO DO USUÁRIO ---
+            function fetchProgresso() {
+                fetch('/api/progressos/', { method: 'GET', headers: headers })
+                    .then(response => response.json())
+                    .then(data => {
+                        const progresso = data[0]; 
+                        
+                        if (progresso) {
+                            // Salva o ID do progresso para usar na API de "marcar etapa"
+                            progressoId = progresso.id; 
 
-            // 3. Buscar as trilhas (da API pública)
-            fetch('/api/trilhas/', { method: 'GET' })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Trilhas disponíveis:', data);
-                    // Aqui vamos adicionar o código para renderizar as trilhas
-                })
-                .catch(error => console.error('Erro ao buscar trilhas:', error));
+                            minhaTrilhaContainer.innerHTML = `
+                                <p><strong>Trilha Selecionada:</strong> ${progresso.trilha_selecionada || 'Nenhuma'}</p>
+                                <p><strong>Etapas Concluídas (IDs):</strong> ${progresso.etapas_concluidas.join(', ') || 'Nenhuma'}</p>
+                            `;
+                        } else {
+                            minhaTrilhaContainer.innerHTML = '<p>Você ainda não iniciou seu progresso.</p>';
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar progresso:', error));
+            }
 
-            // 4. Buscar o progresso do usuário (da API protegida)
-            fetch('/api/progressos/', { method: 'GET', headers: headers })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Progresso do usuário:', data);
-                    // O 'data' aqui será uma lista, provavelmente com um item:
-                    // [ { "usuario": 1, "trilha_selecionada": null, "etapas_concluidas": [1, 2] } ]
-                })
-                .catch(error => console.error('Erro ao buscar progresso:', error));
-        });
-    </script>
-    
+            // --- 5. FUNÇÃO PARA CONECTAR AO BACKEND (MARCAR ETAPA) ---
+            async function marcarEtapaConcluida(etapaId) {
+                if (!progressoId) {
+                    alert('Erro: Progresso do usuário não encontrado.');
+                    return;
+                }
+
+                // Esta é a URL da API que criamos na Tarefa #24
+                const url = `/api/progressos/${progressoId}/marcar_etapa_concluida/`;
+                const body = JSON.stringify({ "etapa_id": etapaId });
+
+                try {
+                    const response = await fetch(url, { method: 'POST', headers: headers, body: body });
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        alert('Etapa concluída com sucesso!');
+                        // Atualiza a seção "Minha Trilha Atual" para mostrar a nova etapa
+                        fetchProgresso(); 
+                    } else {
+                        alert(`Erro: ${data.erro}`);
+                    }
+                } catch (error) {
+                    console.error('Erro ao marcar etapa:', error);
+                }
+            }
+
+            // --- 6. "ESCUTADOR" DE EVENTOS ---
+            // Adiciona um "escutador" ao container das trilhas
+            trilhasContainer.addEventListener('click', (e) => {
+                // Verifica se o clique foi em um botão com a classe 'complete-btn'
+                if (e.target.classList.contains('complete-btn')) {
+                    const etapaId = e.target.getAttribute('data-etapa-id');
+                    marcarEtapaConcluida(etapaId);
+                }
+            });
+
+            // --- 7. CARREGAMENTO INICIAL ---
+            // Chama as funções para carregar os dados quando a página abre
+            fetchTrilhas();
+            fetchProgresso();
+
+        });
+    </script>
+
 </body>
 </html>
