@@ -8,6 +8,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from users.models import CustomUser
 import json
+from rest_framework.authtoken.models import Token
 
 @csrf_exempt # Use para desenvolvimento, para produção pesquise sobre autenticação por token
 def login_view(request):
@@ -26,7 +27,10 @@ def login_view(request):
             if user is not None:
                 # Se o usuário for autenticado com sucesso, cria a sessão
                 login(request, user)
-                return JsonResponse({'message': 'Login realizado com sucesso!'}, status=200)
+                # Encontre ou crie um token para este usuário
+                token, created = Token.objects.get_or_create(user=user)
+                # Retorne o token no JSON
+                return JsonResponse({'message': 'Login realizado com sucesso!', 'token': token.key}, status=200)
             else:
                 # Se as credenciais forem inválidas
                 return JsonResponse({'message': 'Email ou senha inválidos.'}, status=401)
