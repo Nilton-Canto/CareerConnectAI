@@ -130,3 +130,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Aponta para o seu novo modelo de usuário
 AUTH_USER_MODEL = 'users.CustomUser'
+
+# LLM Settings - Configure sua API key
+# Para Gemini: https://makersuite.google.com/app/apikey
+# Para OpenAI: https://platform.openai.com/api-keys
+LLM_PROVIDER = 'gemini'  # 'gemini' ou 'openai'
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')  # Configure via variável de ambiente
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')  # Configure via variável de ambiente
