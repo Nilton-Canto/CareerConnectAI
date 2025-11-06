@@ -25,3 +25,43 @@ body {
     font-size: 16px;
     border-radius: 5px;
 }
+.login-container {
+    width: 90%;
+    max-width: 400px; /* Define uma largura máxima */
+    margin: 50px auto; /* Centraliza o container na página */
+    padding: 30px;
+    background-color: #ffffff; /* Fundo branco para o formulário */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.login-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block; /* Faz o "E-mail:" e "Senha:" ficarem em linhas separadas */
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%; /* Faz o campo de input ocupar 100% da largura */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Garante que o padding não quebre o layout */
+}
+
+/* Faz o botão de login (que já tinha um estilo) ocupar 100% */
+.login-container .button-primary {
+    width: 100%;
+}

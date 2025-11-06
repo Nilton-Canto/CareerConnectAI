@@ -6,158 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - CareerConnectAI</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 400px;
-            width: 100%;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .error {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .success {
-            color: #27ae60;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .cadastro-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .cadastro-link a {
-            color: #667eea;
-            text-decoration: none;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Acesse sua conta</h1>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            
-            <div id="message"></div>
-            
-            <button type="submit" id="submitBtn">Entrar</button>
-        </form>
-        
-        <div class="cadastro-link">
-            <p>Não tem uma conta? <a href="/api/users/cadastro/">Cadastre-se</a></p>
-        </div>
+
+    <div class="login-container">
+        <header>
+            <h1>Acesse sua conta</h1>
+        </header>
+
+        <main>
+            <form>
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="button-primary">Entrar</button>
+                </div>
+            </form>
+        </main>
     </div>
 
-    <script>
-        const form = document.getElementById('loginForm');
-        const messageDiv = document.getElementById('message');
-        
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Entrando...';
-            messageDiv.innerHTML = '';
-            
-            const formData = {
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value
-            };
-            
-            try {
-                const response = await fetch('/api/users/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    messageDiv.innerHTML = '<p class="success">' + data.message + '</p>';
-                    setTimeout(() => {
-                        window.location.href = '/api/users/dashboard/';
-                    }, 1000);
-                } else {
-                    messageDiv.innerHTML = '<p class="error">' + data.message + '</p>';
-                }
-            } catch (error) {
-                messageDiv.innerHTML = '<p class="error">Erro ao fazer login. Tente novamente.</p>';
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Entrar';
-            }
-        });
-    </script>
 </body>
 </html>
