@@ -21,5 +21,45 @@
         <p>Aqui você verá o progresso na sua trilha selecionada.</p>
     </main>
 
+    <script>
+        // Aguarda o DOM estar pronto
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Pegar o token (vamos assumir que o login salvou no localStorage)
+            const token = localStorage.getItem('authToken'); 
+
+            if (!token) {
+                // Se não tem token, manda o usuário de volta para o login
+                window.location.href = '/api/users/login/';
+                return;
+            }
+
+            // 2. Configurar os headers da requisição com o token
+            const headers = {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json'
+            };
+
+            // 3. Buscar as trilhas (da API pública)
+            fetch('/api/trilhas/', { method: 'GET' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Trilhas disponíveis:', data);
+                    // Aqui vamos adicionar o código para renderizar as trilhas
+                })
+                .catch(error => console.error('Erro ao buscar trilhas:', error));
+
+            // 4. Buscar o progresso do usuário (da API protegida)
+            fetch('/api/progressos/', { method: 'GET', headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Progresso do usuário:', data);
+                    // O 'data' aqui será uma lista, provavelmente com um item:
+                    // [ { "usuario": 1, "trilha_selecionada": null, "etapas_concluidas": [1, 2] } ]
+                })
+                .catch(error => console.error('Erro ao buscar progresso:', error));
+        });
+    </script>
+    
 </body>
 </html>
