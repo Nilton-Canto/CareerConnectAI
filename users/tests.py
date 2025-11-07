@@ -6,7 +6,6 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class LoginAPITests(APITestCase):
-    # ... (Estes são os mesmos testes que você já fez e aprovaram) ...
     def setUp(self):
         self.email = 'testuser@exemplo.com'
         self.password = 'senhaSuperForte123'
