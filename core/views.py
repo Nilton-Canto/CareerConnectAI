@@ -6,7 +6,6 @@ from rest_framework.authentication import TokenAuthentication
 from django.http import JsonResponse
 from .models import Area, Trilha, ProgressoUsuario, Etapa
 from .serializers import AreaSerializer, TrilhaSerializer, ProgressoUsuarioSerializer
-from .llm_service import LLMService
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -76,46 +75,3 @@ def index_view(request):
     return render(request, 'index.html')
 
 
-@csrf_exempt
-@api_view(['POST'])
-def gerar_trilha_llm(request):
-    """
-    API para gerar trilha personalizada usando LLM
-    
-    Recebe:
-    {
-        "area_interesse": "Desenvolvimento Web",
-        "objetivos_usuario": "Trabalhar como desenvolvedor frontend",
-        "experiencia_anterior": "Basico"
-    }
-    
-    Retorna:
-    {
-        "titulo": "...",
-        "descricao": "...",
-        "etapas": [...]
-    }
-    """
-    try:
-        data = json.loads(request.body)
-        area = data.get('area_interesse')
-        objetivos = data.get('objetivos_usuario')
-        experiencia = data.get('experiencia_anterior')
-        
-        if not area or not objetivos:
-            return JsonResponse(
-                {'erro': 'area_interesse e objetivos_usuario são obrigatórios'},
-                status=400
-            )
-        
-        llm_service = LLMService()
-        trilha = llm_service.gerar_trilha_personalizada(area, objetivos, experiencia)
-        
-        return JsonResponse(trilha, safe=False)
-    
-    except json.JSONDecodeError:
-        return JsonResponse({'erro': 'JSON inválido'}, status=400)
-    except ValueError as e:
-        return JsonResponse({'erro': str(e)}, status=500)
-    except Exception as e:
-        return JsonResponse({'erro': f'Erro ao gerar trilha: {str(e)}'}, status=500)
