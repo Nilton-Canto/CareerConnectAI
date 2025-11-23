@@ -13,5 +13,4 @@ router.register(r'progressos', views.ProgressoUsuarioViewSet, basename='progress
 # As URLs da API são determinadas automaticamente pelo roteador
 urlpatterns = [
     path('', include(router.urls)),
-    path('llm/gerar-trilha/', views.gerar_trilha_llm, name='gerar_trilha_llm'),
 ]
