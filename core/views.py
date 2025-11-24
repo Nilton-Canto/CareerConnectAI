@@ -8,6 +8,7 @@ from .models import Area, Trilha, ProgressoUsuario, Etapa
 from .serializers import AreaSerializer, TrilhaSerializer, ProgressoUsuarioSerializer
 from django.views.decorators.csrf import csrf_exempt
 import json
+from .llm_service import LLMService
 
 # ViewSet para o modelo Area.
 # ReadOnlyModelViewSet cria automaticamente as ações de "apenas leitura":
@@ -74,4 +75,33 @@ class ProgressoUsuarioViewSet(viewsets.ModelViewSet):
 def index_view(request):
     return render(request, 'index.html')
 
-
+@csrf_exempt
+@api_view(['POST'])
+def gerar_trilha_llm(request):
+    """
+    API para gerar trilha personalizada usando LLM
+    """
+    try:
+        data = json.loads(request.body)
+        area = data.get('area_interesse')
+        objetivos = data.get('objetivos_usuario')
+        experiencia = data.get('experiencia_anterior')
+        
+        if not area or not objetivos:
+            return JsonResponse(
+                {'erro': 'area_interesse e objetivos_usuario são obrigatórios'},
+                status=400
+            )
+        
+        # Chama o nosso serviço recém-criado
+        llm_service = LLMService()
+        trilha = llm_service.gerar_trilha_personalizada(area, objetivos, experiencia)
+        
+        return JsonResponse(trilha, safe=False)
+    
+    except json.JSONDecodeError:
+        return JsonResponse({'erro': 'JSON inválido'}, status=400)
+    except ValueError as e:
+        return JsonResponse({'erro': str(e)}, status=500)
+    except Exception as e:
+        return JsonResponse({'erro': f'Erro ao gerar trilha: {str(e)}'}, status=500)
