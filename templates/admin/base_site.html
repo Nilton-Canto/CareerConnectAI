@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    
+    <style>
+        /* Barra de topo (Header) */
+        #header {
+            background: #333333; /* Cinza escuro profissional */
+            color: #fff;
+            border-bottom: 4px solid #007bff; /* Azul da marca */
+        }
+
+        /* Links e Botões Primários */
+        a:link, a:visited {
+            color: #007bff;
+        }
+        
+        div.breadcrumbs {
+            background: #f4f4f9;
+            color: #333;
+        }
+
+        /* Botões de Ação (Salvar) */
+        .button.default, input[type=submit].default, .submit-row input.default {
+            background: #28a745; /* O mesmo Verde que usamos no Dashboard */
+            border: none;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .button.default:hover, input[type=submit].default:hover {
+            background: #218838;
+        }
+
+        /* Títulos das Seções */
+        .module h2, .module caption, .inline-group h2 {
+            background: #e9ecef;
+            color: #333;
+        }
+    </style>
+{% endblock %}

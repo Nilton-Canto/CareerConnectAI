@@ -18,6 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from core import views as core_views
 
+#customização admin
+admin.site.site_header = "Admin CareerConnectAI"
+admin.site.site_title = "Portal Admin CareerConnectAI"
+admin.site.index_title = "Bem-vindo ao Gerenciamento de Carreiras"
+
 urlpatterns = [
     # Nova rota para a página inicial
     path('', core_views.index_view, name='index'),
