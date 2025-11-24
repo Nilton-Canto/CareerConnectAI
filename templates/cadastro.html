@@ -4,172 +4,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - CareerConnectAI</title>
+    <title>Criar Conta - CareerConnectAI</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 400px;
-            width: 100%;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .error {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .success {
-            color: #27ae60;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .login-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .login-link a {
-            color: #667eea;
-            text-decoration: none;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Cadastro</h1>
-        <form id="cadastroForm">
-            <div class="form-group">
-                <label for="username">Nome de usuário:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password_confirm">Confirmar senha:</label>
-                <input type="password" id="password_confirm" name="password_confirm" required>
-            </div>
-            
-            <div id="message"></div>
-            
-            <button type="submit" id="submitBtn">Cadastrar</button>
-        </form>
-        
-        <div class="login-link">
-            <p>Já tem uma conta? <a href="/api/users/login/">Fazer login</a></p>
-        </div>
+
+    <div class="login-container">
+        <header>
+            <h1>Crie sua conta</h1>
+            <p style="text-align: center; color: #666;">Junte-se ao CareerConnectAI</p>
+        </header>
+
+        <main>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" required placeholder="Mínimo 8 caracteres">
+                </div>
+
+                <div class="form-group">
+                    <label for="password_confirm">Confirmar Senha:</label>
+                    <input type="password" id="password_confirm" name="password_confirm" required>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="button-primary">Cadastrar</button>
+                </div>
+                <div id="msg-area" style="text-align: center; margin-top: 10px;"></div>
+                
+                <p style="text-align: center; margin-top: 20px;">
+                    Já tem conta? <a href="/api/users/login/">Fazer Login</a>
+                </p>
+            </form>
+        </main>
     </div>
 
     <script>
-        const form = document.getElementById('cadastroForm');
-        const messageDiv = document.getElementById('message');
-        
+        const form = document.getElementById('registerForm');
+        const msgArea = document.getElementById('msg-area');
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Cadastrando...';
-            messageDiv.innerHTML = '';
-            
-            const formData = {
-                username: document.getElementById('username').value,
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                password_confirm: document.getElementById('password_confirm').value
-            };
-            
+            msgArea.textContent = 'Cadastrando...';
+            msgArea.style.color = '#333';
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const password_confirm = document.getElementById('password_confirm').value;
+
             try {
+                // Chama a API de Cadastro que criamos na Tarefa #19
+                // Note a URL: /api/users/api/cadastro (conforme seu urls.py)
                 const response = await fetch('/api/users/api/cadastro', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(formData)
+                    body: JSON.stringify({ 
+                        email: email, 
+                        password: password,
+                        password_confirm: password_confirm,
+                        // O username será gerado automaticamente pelo backend se omitido, 
+                        // ou podemos enviar o email como username se preferir.
+                        username: email.split('@')[0] 
+                    })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (response.ok) {
-                    messageDiv.innerHTML = '<p class="success">' + data.message + '</p>';
+                    msgArea.style.color = 'green';
+                    msgArea.textContent = 'Conta criada com sucesso! Redirecionando...';
+                    
+                    // Espera 2 segundos e manda para o login
                     setTimeout(() => {
                         window.location.href = '/api/users/login/';
-                    }, 1500);
+                    }, 2000);
                 } else {
-                    messageDiv.innerHTML = '<p class="error">' + data.message + '</p>';
+                    msgArea.style.color = 'red';
+                    msgArea.textContent = data.message || 'Erro ao cadastrar.';
                 }
             } catch (error) {
-                messageDiv.innerHTML = '<p class="error">Erro ao cadastrar. Tente novamente.</p>';
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Cadastrar';
+                console.error('Erro:', error);
+                msgArea.style.color = 'red';
+                msgArea.textContent = 'Erro de conexão com o servidor.';
             }
         });
     </script>
+
 </body>
 </html>
