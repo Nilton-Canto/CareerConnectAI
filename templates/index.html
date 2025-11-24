@@ -4,28 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-vindo ao CareerConnectAI</title>
+    <title>CareerConnectAI - Sua Carreira Guiada por IA</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <header>
-        <h1>CareerConnectAI</h1>
-        <p>Planeje sua carreira com a ajuda da Inteligência Artificial.</p>
+
+    <header class="navbar">
+        <div class="logo">CareerConnectAI</div>
+        <nav>
+            <a href="/api/users/login/" class="nav-link">Entrar</a>
+            <a href="#" class="btn-nav">Criar Conta</a>
+        </nav>
     </header>
 
-    <main>
-        <section id="welcome">
-            <h2>Conectando Talentos a Oportunidades</h2>
-            <p>Encontre trilhas de estágio e emprego personalizadas para o seu perfil e objetivos.</p>
-            <div class="actions">
-                <a href="/api/users/login/">
-                    <button class="button-primary">Entrar</button>
-                </a>
-                <a href="/api/users/cadastro/">
-                    <button class="button-secondary">Cadastre-se</button>
-                </a>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>O Futuro da sua Carreira Começa Aqui</h1>
+            <p>Use a Inteligência Artificial para criar trilhas de aprendizado personalizadas e alcance seus objetivos profissionais mais rápido.</p>
+            <div class="hero-buttons">
+                <a href="/api/users/login/"><button class="button-primary">Começar Agora</button></a>
+                <a href="#como-funciona"><button class="button-outline">Saber Mais</button></a>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+
+    <section id="como-funciona" class="features">
+        <h2>Como o CareerConnectAI te ajuda?</h2>
+        
+        <div class="cards-container">
+            <div class="feature-card">
+                <h3>🤖 IA Personalizada</h3>
+                <p>Nossa IA analisa seu perfil e cria um plano de estudos único, focado exatamente no que você precisa aprender.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🚀 Trilhas Prontas</h3>
+                <p>Acesse trilhas validadas pelo mercado nas áreas de Tecnologia, Design e Negócios.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>📈 Acompanhe o Progresso</h3>
+                <p>Marque etapas como concluídas e visualize sua evolução através de um dashboard interativo.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 CareerConnectAI. Todos os direitos reservados.</p>
+    </footer>
+
 </body>
 </html>
