@@ -15,7 +15,7 @@
         </header>
 
         <main>
-            <form>
+            <form id="loginForm">
                 <div class="form-group">
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
@@ -29,9 +29,50 @@
                 <div class="form-group">
                     <button type="submit" class="button-primary">Entrar</button>
                 </div>
+                <div id="error-msg" style="color: red; text-align: center; margin-top: 10px;"></div>
             </form>
         </main>
     </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('error-msg');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Impede a página de recarregar
+            errorMsg.textContent = 'Entrando...';
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // 1. Chama a API de Login (que testamos no Thunder Client)
+                const response = await fetch('/api/users/login/token/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // 2. Sucesso! Salva o token no navegador
+                    localStorage.setItem('authToken', data.token);
+                    
+                    // 3. Redireciona para o Dashboard
+                    window.location.href = '/api/users/dashboard/';
+                } else {
+                    // Erro (senha errada, etc)
+                    errorMsg.textContent = data.message || 'Erro ao fazer login.';
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                errorMsg.textContent = 'Erro de conexão com o servidor.';
+            }
+        });
+    </script>
 
 </body>
 </html>

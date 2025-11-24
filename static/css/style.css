@@ -65,3 +65,215 @@ body {
 .login-container .button-primary {
     width: 100%;
 }
+
+/* --- ESTILOS DA LANDING PAGE (TAREFA #30) --- 
+*/
+
+/* Reset básico para garantir que não haja margens estranhas */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    margin-right: 20px;
+    font-weight: 500;
+}
+
+.btn-nav {
+    text-decoration: none;
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #f4f4f9;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+}
+
+.button-outline {
+    background-color: transparent;
+    border: 2px solid #007bff;
+    color: #007bff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.button-outline:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Features Section */
+.features {
+    padding: 60px 5%;
+    text-align: center;
+    background-color: #fff;
+}
+
+.features h2 {
+    margin-bottom: 50px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 30px;
+    width: 300px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 0; /* Remove margem superior se houver */
+}
+
+/* --- ESTILOS DO DASHBOARD --- */
+
+/* Container principal para dar margem e centralizar */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.dashboard-container h2, .dashboard-container h3 {
+    color: #333;
+    margin-top: 40px;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Estilo dos Cards de Trilha */
+.trilha-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+
+.trilha-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.trilha-card h4 {
+    margin-top: 0;
+    color: #007bff;
+    font-size: 1.3rem;
+}
+
+.trilha-card ul {
+    list-style-type: none; /* Remove as bolinhas */
+    padding-left: 0;
+    margin-top: 15px;
+}
+
+.trilha-card li {
+    background: #f8f9fa;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between; /* Joga o botão para a direita */
+    align-items: center;
+    border-left: 4px solid #ddd;
+}
+
+/* Botão de Concluir (Verde) */
+.complete-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.complete-btn:hover {
+    background-color: #218838;
+}
+
+/* Seção "Minha Trilha" */
+#minha-trilha {
+    background-color: #e3f2fd; /* Azul bem clarinho */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #b3e5fc;
+    color: #0277bd;
+}
