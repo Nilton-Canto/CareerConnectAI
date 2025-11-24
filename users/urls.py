@@ -14,4 +14,7 @@ urlpatterns = [
 
     # Path para a PÁGINA de dashboard (GET)
     path('dashboard/', views.dashboard_view, name='dashboard'),
+
+    path('minhas-trilhas/', views.minhas_trilhas_view, name='minhas_trilhas'),
+    path('explorar/', views.explorar_view, name='explorar'),
 ]

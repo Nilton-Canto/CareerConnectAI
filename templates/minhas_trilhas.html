@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Trilhas - CareerConnectAI</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo"><a href="/api/users/dashboard/" style="text-decoration:none; color:inherit;">CareerConnectAI</a></div>
+        <nav>
+            <a href="/api/users/minhas-trilhas/" class="nav-link" style="font-weight:bold;">Minhas Trilhas</a>
+            <a href="/api/users/explorar/" class="nav-link">Explorar Áreas</a>
+            <a href="#" id="btn-logout" class="btn-nav" style="background-color: #dc3545;">Sair</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h2>Meu Progresso</h2>
+        <div id="minha-trilha"><p>Carregando...</p></div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('authToken'); 
+            if (!token) { window.location.href = '/api/users/login/'; return; }
+
+            document.getElementById('btn-logout').addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('authToken');
+                window.location.href = '/api/users/login/';
+            });
+
+            const headers = { 'Authorization': `Token ${token}`, 'Content-Type': 'application/json' };
+
+            fetch('/api/progressos/', { method: 'GET', headers: headers })
+                .then(res => res.json())
+                .then(data => {
+                    const progresso = data[0];
+                    const container = document.getElementById('minha-trilha');
+                    if (progresso) {
+                        container.innerHTML = `
+                            <div class="trilha-card">
+                                <h4>Trilha Atual</h4>
+                                <p><strong>ID da Trilha:</strong> ${progresso.trilha_selecionada || 'Nenhuma'}</p>
+                                <p><strong>Etapas Concluídas:</strong> ${progresso.etapas_concluidas.length}</p>
+                            </div>`;
+                    } else {
+                        container.innerHTML = '<p>Você ainda não iniciou nenhuma trilha.</p>';
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

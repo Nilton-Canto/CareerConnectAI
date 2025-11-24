@@ -101,3 +101,9 @@ def cadastro_view(request):
 def cadastro_page_view(request):
     """Renderiza a página HTML de cadastro"""
     return render(request, 'cadastro.html')
+
+def minhas_trilhas_view(request):
+    return render(request, 'minhas_trilhas.html')
+
+def explorar_view(request):
+    return render(request, 'explorar.html')

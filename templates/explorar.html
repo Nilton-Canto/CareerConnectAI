@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar - CareerConnectAI</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo"><a href="/api/users/dashboard/" style="text-decoration:none; color:inherit;">CareerConnectAI</a></div>
+        <nav>
+            <a href="/api/users/minhas-trilhas/" class="nav-link">Minhas Trilhas</a>
+            <a href="/api/users/explorar/" class="nav-link active" style="font-weight:bold;">Explorar Áreas</a>
+            <a href="#" id="btn-logout" class="btn-nav" style="background-color: #dc3545;">Sair</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h2>Explorar Trilhas</h2>
+        <p>Descubra novos caminhos para sua carreira.</p>
+        <div id="trilhas-disponiveis"><p>Carregando...</p></div>
+    </main>
+
+    <script>
+        // Mesma lógica de autenticação, mas só busca as trilhas
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('authToken'); 
+            if (!token) { window.location.href = '/api/users/login/'; return; }
+
+            document.getElementById('btn-logout').addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('authToken');
+                window.location.href = '/api/users/login/';
+            });
+
+            fetch('/api/trilhas/', { method: 'GET' })
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('trilhas-disponiveis');
+                    container.innerHTML = ''; 
+                    data.forEach(trilha => {
+                        // Renderiza o card (sem botão de concluir, pois é só explorar)
+                        let etapasHTML = '<ul>';
+                        trilha.etapas.forEach(etapa => {
+                            etapasHTML += `<li>${etapa.titulo}</li>`;
+                        });
+                        etapasHTML += '</ul>';
+                        
+                        const div = document.createElement('div');
+                        div.className = 'trilha-card';
+                        div.innerHTML = `<h4>${trilha.titulo}</h4><p>${trilha.descricao}</p>${etapasHTML}`;
+                        container.appendChild(div);
+                    });
+                });
+        });
+    </script>
+</body>
+</html>
